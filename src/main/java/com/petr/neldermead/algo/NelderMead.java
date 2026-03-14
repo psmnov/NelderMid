@@ -8,8 +8,8 @@ public class NelderMead {
     private double betta = 0.5;
     private double gamma = 2;
 
-    private final int maxIterations = 1000000;
-    private final double epsilon = 0.00000001;
+    private final int maxIterations = 100000;
+    private final double epsilon = 0.000001;
 
     Simplex simplex;
     public NelderMead(MathFunction function, Simplex simplex){
@@ -20,9 +20,10 @@ public class NelderMead {
         simplex.calcAll(function);
 
         //посчитать значение функции в каждой точке и отсортировать. best, good, worst
-        simplex.sort();
+
         int i = 0;
         while(i<maxIterations) {
+            simplex.sort();
 
             Point best = simplex.getV1Best();
             Point good = simplex.getV2Worse();
@@ -30,26 +31,15 @@ public class NelderMead {
 
             if(Math.abs(best.getFunctionValueInPoint() - worst.getFunctionValueInPoint()) < epsilon) break;
 
-            Point middle = simplex.getMiddlePoint(good, best);
-            Point xR = simplex.plus(
-                    middle,
-                    simplex.multiply(
-                            simplex.plus(middle, simplex.multiply(worst, -1)),
-                            alpha
-                    )
-            );
+            Point middle = simplex.getMiddlePoint();
+            //отражение
+            Point xR = simplex.plus(middle, simplex.multiply(simplex.plus(middle, simplex.multiply(worst, -1)), alpha));
 
             xR.calcFunctionValue(function);
 
             if (xR.getFunctionValueInPoint() < best.getFunctionValueInPoint()) {
-
-                Point xE = simplex.plus(
-                        middle,
-                        simplex.multiply(
-                                simplex.plus(xR, simplex.multiply(middle, -1)),
-                                gamma
-                        )
-                );
+                //растяжение
+                Point xE = simplex.plus(middle, simplex.multiply(simplex.plus(xR, simplex.multiply(middle, -1)), gamma));
                 xE.calcFunctionValue(function);
 
                 if (xE.getFunctionValueInPoint() < best.getFunctionValueInPoint()) simplex.getPoints()[simplex.getPoints().length - 1] = xE;
@@ -60,6 +50,7 @@ public class NelderMead {
             }
 
             else  {
+                //сжатие
                 Point xS = simplex.plus(simplex.multiply(middle, (1 - betta)), simplex.multiply(worst, betta));
                 xS.calcFunctionValue(function);
 

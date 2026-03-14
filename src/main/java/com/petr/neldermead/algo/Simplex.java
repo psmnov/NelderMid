@@ -20,8 +20,14 @@ public class Simplex {
         return points[i];
     }
     public void sort(){
+        for(Point p : points){
+            System.out.println("Before sort: " + p);
+        }
         Comparator<Point> byValue = Comparator.comparingDouble(Point::getFunctionValueInPoint);
         Arrays.sort(points, byValue);
+        for(Point p : points){
+            System.out.println("After sort: " + p);
+        }
     }
     public void calcAll(MathFunction function){
         for(Point p: points){
@@ -37,12 +43,17 @@ public class Simplex {
     public Point getV2Worse(){
         return points[points.length - 2];
     }
-    public Point getMiddlePoint(@NotNull Point point1, Point point2){
-        double temp[] = new double[point1.getX().length];
-        for(int i = 0; i<point1.getX().length; i++){
-            temp[i] = (point1.getXn(i) + point2.getXn(i))/2;
+    //ошибка центр должен считаться по всем точкам, не по двум
+    public Point getMiddlePoint(){
+        int size = points[0].getX().length;
+        int n = points.length - 1;
+        double[] mid = new double[size];
+        for(int i = 0; i<points.length - 1; i++){
+            for(int j = 0; j<size; j++){
+                mid[j] += (points[i].getXn(j))/n;
+            }
         }
-        return new Point(temp);
+        return new Point(mid);
     }
     public Point plus(@NotNull Point point1, Point point2){
         double sum[] = new double[point1.getX().length];
