@@ -1,12 +1,12 @@
 package com.petr.neldermead.algo;
 
+import com.petr.neldermead.IterationListener;
+
 public class NelderMead {
     private MathFunction function;
+    private IterationListener listener;
 
 
-    private double alpha = 1;
-    private double betta = 0.5;
-    private double gamma = 2;
 
     private final int maxIterations = 100000;
     private final double epsilon = 0.000001;
@@ -17,53 +17,64 @@ public class NelderMead {
         this.simplex = simplex;
     }
     public Point optimizationAlgo(){
-        simplex.calcAll(function);
+        //simplex.calcAll(function);
 
         //посчитать значение функции в каждой точке и отсортировать. best, good, worst
 
         int i = 0;
         while(i<maxIterations) {
-            simplex.sort();
+            simplex.sort(function);
 
             Point best = simplex.getV1Best();
             Point good = simplex.getV2Worse();
             Point worst = simplex.getV3Worst();
 
-            if(Math.abs(best.getFunctionValueInPoint() - worst.getFunctionValueInPoint()) < epsilon) break;
+            double fBest = function.calc(best);
+            double fGood = function.calc(good);
+            double fWorst = function.calc(worst);
+
+            if(Math.abs(fBest - fWorst) < epsilon) break;
 
             Point middle = simplex.getMiddlePoint();
             //отражение
-            Point xR = simplex.plus(middle, simplex.multiply(simplex.plus(middle, simplex.multiply(worst, -1)), alpha));
+            Point xR = simplex.getXr(middle, worst);
 
-            xR.calcFunctionValue(function);
+            double fXR = function.calc(xR);
 
-            if (xR.getFunctionValueInPoint() < best.getFunctionValueInPoint()) {
+            if (fXR < fBest) {
                 //растяжение
-                Point xE = simplex.plus(middle, simplex.multiply(simplex.plus(xR, simplex.multiply(middle, -1)), gamma));
-                xE.calcFunctionValue(function);
+                Point xE =simplex.getXe(middle, xR);
+                double fXE = function.calc(xE);
 
-                if (xE.getFunctionValueInPoint() < best.getFunctionValueInPoint()) simplex.getPoints()[simplex.getPoints().length - 1] = xE;
-                else simplex.getPoints()[simplex.getPoints().length - 1] = xR;
+
+                if (fXE < fBest) simplex.replaceWorst(xE, function);
+                else simplex.replaceWorst(xR, function);
             }
-            else if (xR.getFunctionValueInPoint() < good.getFunctionValueInPoint() && xR.getFunctionValueInPoint() > best.getFunctionValueInPoint()) {
-                simplex.getPoints()[simplex.getPoints().length - 1] = xR;
+            else if (fXR < fGood && fXR > fBest) {
+                simplex.replaceWorst(xR, function);
             }
 
             else  {
                 //сжатие
-                Point xS = simplex.plus(simplex.multiply(middle, (1 - betta)), simplex.multiply(worst, betta));
-                xS.calcFunctionValue(function);
+                Point xS = simplex.getXs(middle, worst);
+                double fXS = function.calc(xS);
 
-                if (xS.getFunctionValueInPoint() < worst.getFunctionValueInPoint()) simplex.getPoints()[simplex.getPoints().length - 1] = xS;
+                if (fXS < fWorst) simplex.replaceWorst(xS, function);
                 else {
                     simplex.compression();
-                    simplex.calcAll(function);
                 }
             }
             i++;
+            if(listener != null){
+                listener.onIteration(simplex.copyPoints());
+            }
         }
-        simplex.sort();
+
+        simplex.sort(function);
         return simplex.getV1Best();
+    }
+    public void setListener(IterationListener listener){
+        this.listener = listener;
     }
 
 }
