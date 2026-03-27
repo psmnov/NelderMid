@@ -8,11 +8,11 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
-
+        //содержит все элементы управления. Stage - окно.
         MainView view = new MainView();
 
-        Scene scene = new Scene(view.getRoot(), 800, 600);
-
+        Scene scene = new Scene(view.getRoot(), 800, 600);//получаем элементы из view
+        //scene это текущее содержимое экрорана
         stage.setTitle("Nelder-Mead");
         stage.setScene(scene);
         stage.show();

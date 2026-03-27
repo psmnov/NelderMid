@@ -1,11 +1,12 @@
 package com.petr.neldermead.algo;
 
+import com.petr.neldermead.AlgorithmEndedListener;
 import com.petr.neldermead.IterationListener;
 
 public class NelderMead {
     private MathFunction function;
     private IterationListener listener;
-
+    private AlgorithmEndedListener algorithmEndedListener;
 
 
     private final int maxIterations = 100000;
@@ -71,10 +72,16 @@ public class NelderMead {
         }
 
         simplex.sort(function);
+        if(algorithmEndedListener != null){
+            algorithmEndedListener.onAlgoEnd(simplex.getV1Best());
+        }
         return simplex.getV1Best();
     }
     public void setListener(IterationListener listener){
         this.listener = listener;
+    }
+    public void setAlgorithmEndedListener(AlgorithmEndedListener algorithmEndedListener){
+        this.algorithmEndedListener = algorithmEndedListener;
     }
 
 }
