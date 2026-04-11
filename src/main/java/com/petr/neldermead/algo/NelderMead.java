@@ -44,9 +44,9 @@ public class NelderMead {
 
             if (fXR < fBest) {
                 //растяжение
-                Point xE =simplex.getXe(middle, xR);
+                Point xE = simplex.getXe(middle, xR);
+                //вернуть в поинт подсчет значения функции
                 double fXE = function.calc(xE);
-
 
                 if (fXE < fBest) simplex.replaceWorst(xE, function);
                 else simplex.replaceWorst(xR, function);

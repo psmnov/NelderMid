@@ -12,19 +12,23 @@ import java.util.List;
 public class MainController {
 
     private GraphicsContext g;
+    private GraphicsContext gChart;
     private CoordinateTransformer transformer = new CoordinateTransformer();
     private MathFunction function;
     private Point[] lastSimplex;
     private int dimension;
     private List<Point[]> history = new ArrayList<>();
     private Point finalPoint;
+    private List<Double> values = new ArrayList<>();
+    private int iterationCounter = 0;
 
-    public MainController(GraphicsContext g){
+    public MainController(GraphicsContext g, GraphicsContext gChart){
         this.g = g;
+        this.gChart = gChart;
     }
 
     public void run(String expr, int dimension){
-        g.clearRect(0, 0, 600, 600);
+        g.clearRect(0, 0, g.getCanvas().getHeight(), g.getCanvas().getWidth());
         this.function = FunctionParser.parse(expr, dimension);
         this.dimension = dimension;
         Point[] simplexPoints = createSimplex(dimension);
@@ -41,14 +45,19 @@ public class MainController {
                 SimplexDrawer.drawSimplex(g, points, transformer);
             }
         });
+
         nm.setListener(points -> {
+            iterationCounter++;
+
+            double value = function.calc(points[0]); // best
+            values.add(value);
+
             history.add(points);
             redraw();
         });
         nm.setAlgorithmEndedListener(point -> {
             this.finalPoint = point;
             FunctionValueShower.showValue(g, point, function);
-
         });
 
         nm.optimizationAlgo();
@@ -80,14 +89,18 @@ public class MainController {
         redraw();
     }
     private void redraw(){
+        if(dimension==2){
+            g.clearRect(0, 0, g.getCanvas().getHeight(), g.getCanvas().getWidth());
 
-        g.clearRect(0, 0, 600, 600);
-
-        for(Point[] simplex : history){
-            SimplexDrawer.drawSimplex(g, simplex, transformer);
+            for(Point[] simplex : history){
+                SimplexDrawer.drawSimplex(g, simplex, transformer);
+            }
+            FunctionPlotter.drawFunction(g, function, transformer);
+            if(this.finalPoint != null) FunctionValueShower.showValue(g, finalPoint, function);
         }
-        FunctionPlotter.drawFunction(g, function, transformer);
-        if(this.finalPoint != null) FunctionValueShower.showValue(g, finalPoint, function);
+
+        gChart.clearRect(0, 0, gChart.getCanvas().getHeight(), gChart.getCanvas().getWidth());
+        FunctionValueShower.drawChart(gChart, values);
 
     }
 }

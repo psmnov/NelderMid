@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class FunctionPlotter {
 
     public static void drawFunction(GraphicsContext g, MathFunction f, CoordinateTransformer t){
-        //маленью область охватываем от -10 до 10, масштабируем до -100 - 500
+        //маленькую область охватываем от -10 до 10, масштабируем до -100 - 500
         for(double x = -10; x <= 10; x += 0.2){
             for(double y = -10; y <= 10; y += 0.2){
 

@@ -5,6 +5,7 @@ import com.petr.neldermead.controller.MainController;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class MainView {
@@ -19,10 +20,14 @@ public class MainView {
         Button runButton = new Button("Run");
         Button clearButton = new Button("Clear");
         //холст для рисования
-        Canvas canvas = new Canvas(600, 600);
-        GraphicsContext g = canvas.getGraphicsContext2D();//предоставляет методы для рисования  на холсте
+        Canvas canvas = new Canvas(800, 800);
+        Canvas chartCanvas = new Canvas(800, 800);
+        HBox canvasContainer = new HBox();
 
-        MainController controller = new MainController(g);
+        GraphicsContext g = canvas.getGraphicsContext2D();//предоставляет методы для рисования  на холсте
+        GraphicsContext gChart = chartCanvas.getGraphicsContext2D();
+
+        MainController controller = new MainController(g, gChart);
 
         runButton.setOnAction(e -> {
             String expr = functionInput.getText();
@@ -32,6 +37,7 @@ public class MainView {
         });
         clearButton.setOnAction(e -> {
             g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            gChart.clearRect(0, 0, gChart.getCanvas().getHeight(), gChart.getCanvas().getWidth());
         });
         canvas.setOnScroll(e -> {
 
@@ -47,6 +53,7 @@ public class MainView {
         });
 
         canvas.setOnMouseDragged(e -> {
+
             double dx = e.getX() - last[0];
             double dy = e.getY() - last[1];
 
@@ -55,8 +62,9 @@ public class MainView {
             last[0] = e.getX();
             last[1] = e.getY();
         });
+        canvasContainer.getChildren().addAll(canvas, chartCanvas);
         //кидаем в root все что насоздавали
-        root.getChildren().addAll(functionInput, dimensionInput, runButton, clearButton, canvas);
+        root.getChildren().addAll(functionInput, dimensionInput, runButton, clearButton, canvasContainer);
     }
 
     public VBox getRoot(){

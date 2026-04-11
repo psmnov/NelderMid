@@ -6,7 +6,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class FunctionParser {
     public static MathFunction parse(String expr, int dimension){
-
+        //тесты на парсер
         String[] vars = new String[dimension];
 
         for(int i = 0; i < dimension; i++){

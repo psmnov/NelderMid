@@ -11,7 +11,7 @@ public class MainApp extends Application {
         //содержит все элементы управления. Stage - окно.
         MainView view = new MainView();
 
-        Scene scene = new Scene(view.getRoot(), 800, 600);//получаем элементы из view
+        Scene scene = new Scene(view.getRoot(), 1920, 1080);//получаем элементы из view
         //scene это текущее содержимое экрорана
         stage.setTitle("Nelder-Mead");
         stage.setScene(scene);

@@ -101,7 +101,7 @@ public class SimplexTest {
         assertEquals(2, xr.getXn(0));
         assertEquals(2, xr.getXn(1));
     }
-
+    //Переименовать xe xr xs
     @Test
     void testExpansion() {
         Simplex simplex = new Simplex(new Point[]{

@@ -6,6 +6,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.util.List;
+
 public class FunctionValueShower {
     public static void showValue(GraphicsContext g, Point p, MathFunction f){
 
@@ -16,6 +18,29 @@ public class FunctionValueShower {
 
         String text = "Result: " + p + "\n  f = " + value;
 
-        g.fillText(text, 50, 50); // низ canvas
+        g.fillText(text, 50, 50);
+    }
+    public static void drawChart(GraphicsContext g, List<Double> values){
+
+        double startX = 50;
+        double startY = 800;
+        double width = 40;
+
+        double max = values.stream().mapToDouble(v -> v).max().orElse(1);
+
+        for(int i = 0; i < values.size(); i++){
+
+            double value = values.get(i);
+
+            double height = Math.log(value + 1) / Math.log(max + 1) * 200;
+
+            double x = startX + i * (width + 2);
+            double y = startY - height;
+
+            g.fillText("f(x)", 5, 20);
+            g.setFill(Color.BLUE);
+            g.fillRect(x, y, width, height);
+
+        }
     }
 }
