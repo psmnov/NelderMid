@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainController {
 
@@ -28,9 +29,13 @@ public class MainController {
     }
 
     public void run(String expr, int dimension){
-        g.clearRect(0, 0, g.getCanvas().getHeight(), g.getCanvas().getWidth());
+        g.clearRect(0, 0, g.getCanvas().getWidth(), g.getCanvas().getHeight());
         this.function = FunctionParser.parse(expr, dimension);
         this.dimension = dimension;
+        this.history.clear();
+        this.values.clear();
+        this.iterationCounter = 0;
+        this.finalPoint = null;
         Point[] simplexPoints = createSimplex(dimension);
 
         Simplex simplex = new Simplex(simplexPoints);
@@ -42,15 +47,14 @@ public class MainController {
         //имплементируем лямбда функцию
         nm.setListener(points -> {
             if(dimension == 2){
-                SimplexDrawer.drawSimplex(g, points, transformer);
+                SimplexDrawer.drawSimplex(g, points, transformer, false);
             }
         });
 
         nm.setListener(points -> {
             iterationCounter++;
 
-            double value = function.calc(points[0]); // best
-            values.add(value);
+            values.add(points[0].getValue()); // значение уже в Point
 
             history.add(points);
             redraw();
@@ -65,17 +69,19 @@ public class MainController {
 
     private Point[] createSimplex(int dim){
         Point[] points = new Point[dim + 1];
+        double radius = DisplaySettings.SIMPLEX_RADIUS; //будем брать начальные точки случайно внутри радиуса, чтобы не всегда 5.5.5.5...5
+        Random random = new Random(); //для тестов можно seed фиксированный поставить
 
         double[] base = new double[dim];
-        //в тупую первую точку 5;5;5...5;
-        for(int i = 0; i < dim; i++) base[i] = 5;
-
-        points[0] = new Point(base);
+        for(int i = 0; i < dim; i++){
+            base[i] = (random.nextDouble()*2-1)*radius;
+        }
+        points[0] = function.createPoint(base);
 
         for(int i = 1; i <= dim; i++){
             double[] p = base.clone();
-            p[i-1] += 1;
-            points[i] = new Point(p);
+            p[i-1] += DisplaySettings.SIMPLEX_STEP_MIN + random.nextDouble();
+            points[i] = function.createPoint(p);
         }//получим витоге points = {(6, 5 5 ..), (5, 6 5..), (5, 5, 6..)}
 
         return points;
@@ -90,16 +96,17 @@ public class MainController {
     }
     private void redraw(){
         if(dimension==2){
-            g.clearRect(0, 0, g.getCanvas().getHeight(), g.getCanvas().getWidth());
-
-            for(Point[] simplex : history){
-                SimplexDrawer.drawSimplex(g, simplex, transformer);
-            }
+            g.clearRect(0, 0, g.getCanvas().getWidth(), g.getCanvas().getHeight());
             FunctionPlotter.drawFunction(g, function, transformer);
+            SimplexDrawer.drawAxes(g, transformer, g.getCanvas().getWidth(), g.getCanvas().getHeight());
+
+            for (int i = 0; i < history.size(); i++) {
+                SimplexDrawer.drawSimplex(g, history.get(i), transformer, i == history.size()-1);
+            }
             if(this.finalPoint != null) FunctionValueShower.showValue(g, finalPoint, function);
         }
 
-        gChart.clearRect(0, 0, gChart.getCanvas().getHeight(), gChart.getCanvas().getWidth());
+        gChart.clearRect(0, 0, gChart.getCanvas().getWidth(), gChart.getCanvas().getHeight());
         FunctionValueShower.drawChart(gChart, values);
 
     }
