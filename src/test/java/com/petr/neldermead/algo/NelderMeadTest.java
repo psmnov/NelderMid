@@ -16,9 +16,9 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{5,5}),
-                new Point(new double[]{6,5}),
-                new Point(new double[]{5,6})
+                f.createPoint(new double[]{5,5}),
+                f.createPoint(new double[]{6,5}),
+                f.createPoint(new double[]{5,6})
         };
 
         Simplex simplex = new Simplex(start);
@@ -40,9 +40,9 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{0,0}),
-                new Point(new double[]{1,0}),
-                new Point(new double[]{0,1})
+                f.createPoint(new double[]{0,0}),
+                f.createPoint(new double[]{1,0}),
+                f.createPoint(new double[]{0,1})
         };
 
         Simplex simplex = new Simplex(start);
@@ -64,9 +64,9 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{-1,1}),
-                new Point(new double[]{0,1}),
-                new Point(new double[]{-1,2})
+                f.createPoint(new double[]{-1,1}),
+                f.createPoint(new double[]{0,1}),
+                f.createPoint(new double[]{-1,2})
         };
 
         Simplex simplex = new Simplex(start);
@@ -87,9 +87,9 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{10,10}),
-                new Point(new double[]{11,10}),
-                new Point(new double[]{10,11})
+                f.createPoint(new double[]{10,10}),
+                f.createPoint(new double[]{11,10}),
+                f.createPoint(new double[]{10,11})
         };
 
         Simplex simplex = new Simplex(start);
@@ -114,10 +114,10 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{5,5,5}),
-                new Point(new double[]{6,5,5}),
-                new Point(new double[]{5,6,5}),
-                new Point(new double[]{5,5,6})
+                f.createPoint(new double[]{5,5,5}),
+                f.createPoint(new double[]{6,5,5}),
+                f.createPoint(new double[]{5,6,5}),
+                f.createPoint(new double[]{5,5,6})
         };
 
         Simplex simplex = new Simplex(start);
@@ -141,10 +141,10 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{0,0,0}),
-                new Point(new double[]{1,0,0}),
-                new Point(new double[]{0,1,0}),
-                new Point(new double[]{0,0,1})
+                f.createPoint(new double[]{0,0,0}),
+                f.createPoint(new double[]{1,0,0}),
+                f.createPoint(new double[]{0,1,0}),
+                f.createPoint(new double[]{0,0,1})
         };
 
         Simplex simplex = new Simplex(start);
@@ -167,11 +167,11 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{5,5,5,5}),
-                new Point(new double[]{6,5,5,5}),
-                new Point(new double[]{5,6,5,5}),
-                new Point(new double[]{5,5,6,5}),
-                new Point(new double[]{5,5,5,6})
+                f.createPoint(new double[]{5,5,5,5}),
+                f.createPoint(new double[]{6,5,5,5}),
+                f.createPoint(new double[]{5,6,5,5}),
+                f.createPoint(new double[]{5,5,6,5}),
+                f.createPoint(new double[]{5,5,5,6})
         };
 
         Simplex simplex = new Simplex(start);
@@ -194,10 +194,10 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{0,0,0}),
-                new Point(new double[]{0,0,1}),
-                new Point(new double[]{-1,0.5,0}),
-                new Point(new double[]{-2,-1,-0.5})
+                f.createPoint(new double[]{0,0,0}),
+                f.createPoint(new double[]{0,0,1}),
+                f.createPoint(new double[]{-1,0.5,0}),
+                f.createPoint(new double[]{-2,-1,-0.5})
         };
 
         Simplex simplex = new Simplex(start);
@@ -221,9 +221,9 @@ public class NelderMeadTest {
         };
 
         Point[] start = {
-                new Point(new double[]{3,3}),
-                new Point(new double[]{4,3}),
-                new Point(new double[]{3,4})
+                f.createPoint(new double[]{3,3}),
+                f.createPoint(new double[]{4,3}),
+                f.createPoint(new double[]{3,4})
         };
 
         Simplex simplex = new Simplex(start);

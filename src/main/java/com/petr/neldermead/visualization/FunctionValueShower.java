@@ -22,9 +22,9 @@ public class FunctionValueShower {
     }
     public static void drawChart(GraphicsContext g, List<Double> values){
 
-        double startX = 50;
-        double startY = 800;
-        double width = 40;
+        double startX = DisplaySettings.CHART_START_X;
+        double startY = DisplaySettings.CHART_START_Y;
+        double width = DisplaySettings.CHART_BAR_WIDTH;
 
         double max = values.stream().mapToDouble(v -> v).max().orElse(1);
 
@@ -32,7 +32,7 @@ public class FunctionValueShower {
 
             double value = values.get(i);
 
-            double height = Math.log(value + 1) / Math.log(max + 1) * 200;
+            double height = Math.log(value + 1) / Math.log(max + 1) * DisplaySettings.CHART_MAX_HEIGHT;
 
             double x = startX + i * (width + 2);
             double y = startY - height;
