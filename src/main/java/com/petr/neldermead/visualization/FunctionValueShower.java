@@ -20,6 +20,7 @@ public class FunctionValueShower {
 
         g.fillText(text, 50, 50);
     }
+    //Поделить юай и алгоритмические действия, можно сделать класс настройка с размерами
     public static void drawChart(GraphicsContext g, List<Double> values){
 
         double startX = 50;
