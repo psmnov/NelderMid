@@ -36,19 +36,17 @@ public class NelderMead {
 
             if(Math.abs(fBest - fWorst) < epsilon) break;
 
-            Point middle = simplex.getMiddlePoint();
+            Point middle = simplex.getMiddlePoint(function);
             //отражение
-            Point xR = simplex.getXr(middle, worst);
+            Point xR = simplex.getXr(middle, worst, function);
 
-            double fXR = function.calc(xR);
+            double fXR = xR.getValue();
 
             if (fXR < fBest) {
                 //растяжение
-                Point xE = simplex.getXe(middle, xR);
-                //вернуть в поинт подсчет значения функции
-                double fXE = function.calc(xE);
+                Point xE = simplex.getXe(middle, xR, function);
 
-                if (fXE < fBest) simplex.replaceWorst(xE, function);
+                if (xE.getValue() < fBest) simplex.replaceWorst(xE, function);
                 else simplex.replaceWorst(xR, function);
             }
             else if (fXR < fGood && fXR > fBest) {
@@ -57,12 +55,11 @@ public class NelderMead {
 
             else  {
                 //сжатие
-                Point xS = simplex.getXs(middle, worst);
-                double fXS = function.calc(xS);
+                Point xS = simplex.getXs(middle, worst, function);
 
-                if (fXS < fWorst) simplex.replaceWorst(xS, function);
+                if (xS.getValue() < fWorst) simplex.replaceWorst(xS, function);
                 else {
-                    simplex.compression();
+                    simplex.compression(function);
                 }
             }
             i++;

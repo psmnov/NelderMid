@@ -14,9 +14,9 @@ public class IntegrationTest {
         };
 
         Point[] start = {
-                new Point(new double[]{5,5}),
-                new Point(new double[]{6,5}),
-                new Point(new double[]{5,6})
+                f.createPoint(new double[]{5,5}),
+                f.createPoint(new double[]{6,5}),
+                f.createPoint(new double[]{5,6})
         };
 
         Simplex simplex = new Simplex(start);

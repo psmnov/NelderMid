@@ -28,9 +28,9 @@ public class App
                 2
         );
 
-        Point p1 = new Point(new double[]{3, 3});
-        Point p2 = new Point(new double[]{4, 3});
-        Point p3 = new Point(new double[]{3, 4});
+        Point p1 = f.createPoint(new double[]{3, 3});
+        Point p2 = f.createPoint(new double[]{4, 3});
+        Point p3 = f.createPoint(new double[]{3, 4});
 
         //System.out.println(function.calc(new double[]{2,-1}));
         Simplex simplex = new Simplex(new Point[]{p1, p2, p3});
