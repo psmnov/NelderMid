@@ -108,7 +108,6 @@ public class SimplexTest {
         assertEquals(2, xr.getXn(0));
         assertEquals(2, xr.getXn(1));
     }
-    //Переименовать xe xr xs
     @Test
     void testExpansion() {
         Simplex simplex = new Simplex(new Point[]{
@@ -160,7 +159,6 @@ public class SimplexTest {
         assertTrue(simplex.getExactPoint(2).getXn(1) < 2);
     }
 
-    // newTests
 
     @Test
     void testSortValuesCorrect() {
@@ -187,7 +185,6 @@ public class SimplexTest {
     @Test
     void testMiddlePointExcludesWorst() {
         MathFunction f = p -> p.getXn(0);
-        // points[0]=0, points[1]=1, points[2]=100 — worst не входит в среднее
         Point[] points = {
                 f.createPoint(new double[]{0}),
                 f.createPoint(new double[]{1}),

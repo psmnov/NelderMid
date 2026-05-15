@@ -18,8 +18,6 @@ public class NelderMead {
         this.simplex = simplex;
     }
     public Point optimizationAlgo(){
-        //simplex.calcAll(function);
-
         //посчитать значение функции в каждой точке и отсортировать. best, good, worst
 
         int i = 0;
@@ -30,9 +28,9 @@ public class NelderMead {
             Point good = simplex.getV2Worse();
             Point worst = simplex.getV3Worst();
 
-            double fBest = function.calc(best);
-            double fGood = function.calc(good);
-            double fWorst = function.calc(worst);
+            double fBest = best.getValue();
+            double fGood = good.getValue();
+            double fWorst = worst.getValue();
 
             if(Math.abs(fBest - fWorst) < epsilon) break;
 
@@ -63,6 +61,7 @@ public class NelderMead {
                 }
             }
             i++;
+            // yeild return нет в Java:(
             if(listener != null){
                 listener.onIteration(simplex.copyPoints());
             }

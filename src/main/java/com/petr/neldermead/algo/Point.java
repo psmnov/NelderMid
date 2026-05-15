@@ -1,14 +1,12 @@
 package com.petr.neldermead.algo;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Arrays;
 
 public class Point {
     private final double[] X;
     private final double value;
 
-    public Point(double[] X, double value){ //создать без значения не получится, стандартно значение 0 задаём
+    public Point(double[] X, double value){
         this.X = Arrays.copyOf(X, X.length);
         this.value = value;
     }

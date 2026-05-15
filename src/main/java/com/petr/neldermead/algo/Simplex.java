@@ -15,10 +15,7 @@
         public Simplex(Point[] points){
             this.points = points;
         }
-        //так делать нельзя
-        /*public Point[] getPoints() {
-            return points;
-        }*/
+
         public void replaceWorst(Point p, MathFunction function){
 
             points[points.length - 1] = p;
@@ -74,7 +71,6 @@
             }
             return f.createPoint(temp);
         }
-    //перенести отражение сюда же и растяжение тоже
         public void compression(MathFunction f){
             for(int i = 1; i<points.length; i++){
                 points[i] = this.plus(points[0], this.multiply(this.plus(points[i], this.multiply(points[0], -1, f), f), 0.5, f), f);
